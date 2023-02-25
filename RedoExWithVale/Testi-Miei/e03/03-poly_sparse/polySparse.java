@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.Query;
-
 public class polySparse {
     private final List<Integer> terms;
     private final List<Integer> expo;
