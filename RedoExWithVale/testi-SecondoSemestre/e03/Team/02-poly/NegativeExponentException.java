@@ -1,9 +1,11 @@
-public class NegativeExponentException extends RuntimeException {
+public class NegativeExponentException extends IllegalArgumentException{
+
     public NegativeExponentException() {
     }
 
-    public NegativeExponentException(String message) {
-        super(message);
+    public NegativeExponentException(String s) {
+        super(s);
     }
-
+    
+    
 }

@@ -48,14 +48,10 @@ public class Poly {
         Poly nP=this;
         int oldD=nP.degree();
         if(p.degree()>nP.degree()){
-            for (int i=nP.degree();i<p.degree();i++){
-                nP.pol.add(-1*p.pol.get(i));
+            for (int i=nP.degree()+1;i<p.degree();i++){
+                nP.pol.add(p.pol.get(i));
             }
         }
-        for(int i=0;i<oldD;i++){
-            nP.pol.set(i,nP.gEg(i)-p.gEg(i));
-        }
-        
         
         return nP;
         
@@ -103,5 +99,7 @@ public class Poly {
         }
 
     }
- 
+
 }
+
+
