@@ -1,125 +1,77 @@
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Overview:
+ * questa classe rappresenta una coda di interi
+ */
 public class IntQueue {
-    /**
-     * TODO:
-     * porca madonna capisci a che cosa cazzo serve tail perchè non ha senso
-     */
-    /**
-     * ABS:
-     * i valori contenuti all'interno di coda rappresentano gli elementi di una pilo
-     * FIFO
-     * mentre head rappresenta il primo argomento in cima alla pilla
-     * tail rappresenta la capienza della pila
-     */
-    /**
-     * IR:
-     * la coda non contiene più elementi della sua capienza massima,
-     * -1 <= head < size
-     * 0 <= tail < size
-     * head == -1 ⇒ tail = 0
-     * 
-     */
-    private int[] coda;
-    private int head, tail;
+    // Campi
+    List<Integer> queue;
+    int size;
 
     /**
-     * Si occupa di inizializzare un oggeto di tipo intqueue
-     * 
-     * @param n definira la grandezza della coda
-     * @throws IllegalArgumentException Viene lanciata quando n<0
+     * AF: size deve essere >=0
      */
-    public IntQueue(int n) throws IllegalArgumentException {
-        if (n < 0) {
-            throw new IllegalArgumentException("N must be >=0");
-        }
-        coda = new int[n];
-        head = -1;
-        tail = n;
-
-    }
-
     /**
-     * Inserisce un elemento n all'interno della coda, se la coda non è piena,
-     * altrimenti solleva un eccezione
-     * 
-     * @param n
-     * @throws OutOfBoundException
+     * IR: ogni elemento di queue rappresenta un elemento
+     * della coda e size rappresenta il numero massimo di elementi della coda
      */
-    public void Enqueue(int n) throws OutOfBoundException {
-        if (tail > coda.length) {
-            throw new OutOfBoundException("Out of Tail bound :(");
-        }
-        coda[head] = n;
 
-        head++;
-
-    }
-
-    /**
-     * Rimuove il primo elmento dalla pila
-     * va in errore se la pila è piena
-     * 
-     * @throws EmptyQueueExeption
-     */
-    public int Dequeue() throws EmptyQueueExeption {
-        System.out.println(tail);
-        if (IsEmpty()) {
-            throw new EmptyQueueExeption("the tail is empty popi popi");
-        }
-        int result = coda[head];
-        head--;
-        return result;
-    }
-
-    /**
-     * Resituisce True se la coda è piena, viceversa se è non lo è
-     * 
-     * @return
-     */
-    public boolean IsFull() {
-        return (tail == coda.length);
-
-    }
-
-    /**
-     * Restituisce se la coda è vuota oppure no
-     * 
-     * @return
-     */
-    public boolean IsEmpty() {
-        return head == -1;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + Arrays.hashCode(coda);
-        result = prime * result + head;
-        result = prime * result + tail;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        // TODO
+    public IntQueue(int size) {
+        queue = new ArrayList<Integer>();
+        this.size = size;
     }
 
     @Override
     public String toString() {
-        StringBuilder ret = new StringBuilder("La coda contiene:");
-        ret.append("[");
+        return queue.toString();
+    }
 
-        if (tail != 0) {
-            for (int i = 1; i < tail; i++) {
-                ret.append(coda[i - 1] + ",");
-            }
-            ret.append(coda[tail - 1]);
+    /**
+     * QUesto metodo si occupa di aggiungere un elemento in coda alla nostra coda
+     * 
+     * @param n
+     * @throws IllegalAction quando
+     */
+
+    // REQUIRES:---
+    // EFFECTS: Questo metodo si occupa di aggiungere un elemento in coda alla
+    // nostra coda, se aggiungendo l'elemento si supera la capacità specificata dal
+    // campo size, lancia l'eccezione IllegalAction
+    // MODIFIES:---
+
+    public void enqueue(int n) throws IllegalAction {
+        if (queue.size() >= size) {
+            throw new IllegalAction("size massima superata!");
         }
-        ret.append("]");
 
-        return ret.toString();
+        queue.add(0, n);
+    }
+
+    // REQUIRES:---
+    // EFFECTS: Questo metodo si occupa di restituire il primo elementi della coda,
+    // se la coda è vuota viene lanciata l'eccezione EmptyQueueExeption
+    // MODIFIES:---
+    /**
+     * Questo metodo si occupa di restituire il primo elementi della coda, se la
+     * coda è vuota viene lanciata l'eccezione EmptyQueueExeption
+     * 
+     * @return
+     * @throws EmptyQueueExeption
+     */
+
+    public int dequeue() throws EmptyQueueExeption {
+        if (queue.size() == 0) {
+            throw new EmptyQueueExeption("la coda è vuota");
+        }
+        int n = queue.get(queue.size() - 1);
+        queue.remove(n);
+        return n;
+    }
+
+    public boolean repOk(ArrayList<Integer> queue, int size) {
+        return queue.size() < size && size > 0;
     }
 
 }

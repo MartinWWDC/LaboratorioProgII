@@ -1,114 +1,130 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/*
-    Overview:Questa classe rappresenta polinomi sparsi a coefficienti reali in una sola variabile, 
-    con polinomio sparso intendiamo un polinomio avente molti coefficienti uguali a 0 
-*/
+//Rappresentiamo un polinomio in maniera più efficente
+public class SparsePoly{
+    //Campi
+    public record Term(int coeff,int degree) {
+        public Term{
+            if(degree<0) throw new NegativeExponentException("il grado deve essere maggiore di 0");
+        }
+    
+        @Override
+        public String toString() {
+            return coeff+"^"+degree;
+        }
 
-public class SparsePoly {
-    // Campi
-    Map<Integer, Integer> monomi;
-    int deg;
-
-    /*
-     * AF:le chiavi di questa struttura costituiscono i gradi dei monomi con
-     * coefficiente diverso da 0 presenti nel
-     * polinomio che rappresento, per rappresentare il polinomio zero creo una
-     * struttura di grado 0
-     * IR: il polinomio non può essere nullo, ogni chiave può apparire una e una
-     * sola volta, le chiavi devono essere > 0,
-     * se chiave k!=0 map[k]!=0; altrimenti map[k] può assumere qualsiasi valore
+    }
+    /**
+     * AF: Degree>0
      */
-    // COSTRUTTORI
+    /**
+     * RI: ogni elemento di poly rappresenterà  n*x^c e poly sarà ordinato cresente
+     */
+    public List<Term> poly;
     public SparsePoly() {
-        monomi = new HashMap<Integer, Integer>();
-        monomi.put(0, 0);
-        deg = 0;
+        poly=new ArrayList<Term>();
     }
+    public SparsePoly(int coeff,int degree) {
+        this();
 
-    // Effects: dati due interi c ed n costruisce un polinomio avente grado n e che
-    // ha come coeffiente di grado n il valore c
-    public SparsePoly(int c, int n) throws NegativeExponentException {
-        if (n < 0)
-            throw new NegativeExponentException("Il grado non può essere negativo");
-        monomi = new HashMap<Integer, Integer>();
-        monomi.put(n, c);
-
-        deg = n;
+        if(coeff!=0)poly.add(new Term(coeff,degree));
     }
-
-    // EFFECTS: restituisce il grado massimo del polinomio
-    public int degree() {
-        return deg;
+    
+    /**
+     * Resituisce il grado del polinomio
+     * @return
+     */
+    public int degree(){
+        return poly.size()>0? poly.get(poly.size()-1).degree:-1;
     }
-
-    // EFFECTS: restituisce il coefficente del termine di grado n del polinomio, se
-    // il grado n è < 0 o >grado massimo del polinomio lancia una
-    // IllegalArgumentException
-    public int coeff(int n) throws IllegalArgumentException {
-
-        if (n < 0 || n > deg)
-            throw new IllegalArgumentException("Grado non accettabile");
-
-        if (monomi.containsKey(n)) {
-            return monomi.get(n);
-        } else {
-            return 0;
+    
+    /**
+     * Resituisce la posizione di un elemento in base al suo grado 
+     * @param degree
+     * @return
+     */
+    private int findByDegree(int degree) {
+        int low = 0;
+        int high = poly.size() - 1;
+    
+        while (low <= high) {
+          int mid = (low + high) >>> 1;
+          int midVal = poly.get(mid).degree;
+    
+          if (midVal < degree) low = mid + 1;
+          else if (midVal > degree) high = mid - 1;
+          else return mid;
         }
-    }
+        return -(low + 1);
+      }
 
-    public SparsePoly add(SparsePoly q) {
-        SparsePoly eP = new SparsePoly();
-        for (Map.Entry<Integer, Integer> entry : monomi.entrySet()) {
-            Integer key = entry.getKey();
-            Integer value = entry.getValue();
-            if (eP.monomi.containsKey(key)) {
-                value += eP.monomi.get(key);
+    /**
+     * Resituisce il coefficente di un elemento di grado degree
+     * @param degree
+     * @return
+     */
+
+    public int coeff(int degree) {
+        int i=findByDegree(degree);
+        if(i>=0) return poly.get(i).coeff;
+        return 0;
+    }
+    
+    public SparsePoly add(SparsePoly q) throws NullPointerException {
+        SparsePoly result=new SparsePoly();
+        int indexThis = 0, indexQ = 0;
+        while(indexThis<poly.size() && indexQ<q.poly.size()){
+            int diff = poly.get(indexThis).degree - q.poly.get(indexQ).degree;
+            if (diff>0) result.poly.add(poly.get(indexThis++));
+            else if( diff>0) result.poly.add(q.poly.get(indexQ++));
+            else{
+                int newCoeff=q.poly.get(indexQ).coeff+poly.get(indexThis).coeff;
+                if (newCoeff != 0) result.poly.add(new Term(newCoeff, poly.get(indexThis).degree));
+                indexThis++;
+                indexQ++;
             }
-            eP.monomi.put(key, value);
-        }
-        for (Map.Entry<Integer, Integer> entry : q.monomi.entrySet()) {
-            Integer key = entry.getKey();
-            Integer value = entry.getValue();
-            if (eP.monomi.containsKey(key)) {
-                value += eP.monomi.get(key);
-            }
-            eP.monomi.put(key, value);
-        }
-        ArrayList<Integer> chiavi = new ArrayList<Integer>();
-        for (Map.Entry<Integer, Integer> entry : eP.monomi.entrySet()) {
-            Integer key = entry.getKey();
-            Integer value = entry.getValue();
-            if (value == 0) {
-                chiavi.add(key);
-            }
 
         }
-        for (int i = 0; i < chiavi.size(); i++) {
-            int k = chiavi.get(i);
-            eP.monomi.remove(k);
-        }
-        return eP;
+        while(indexThis<poly.size()) result.poly.add(poly.get(indexThis++));
+        while(indexQ<q.poly.size()) result.poly.add(q.poly.get(indexThis++));
+        return result;
     }
 
+
+    public SparsePoly mul(SparsePoly other) throws NullPointerException {
+        SparsePoly result=new SparsePoly();
+       if(other.degree()==-1|| degree()==-1) return result;
+       for (int indexThis = 0; indexThis < poly.size(); indexThis++)
+       for (int indexOther = 0; indexOther < other.poly.size(); indexOther++) {
+         int newCoeff = poly.get(indexThis).coeff * other.poly.get(indexOther).coeff;
+         int newDegree = poly.get(indexThis).degree + other.poly.get(indexOther).degree;
+ 
+         int index = result.findByDegree(newDegree);
+         if (index >= 0) {
+           newCoeff += result.poly.get(index).coeff;
+           if (newCoeff == 0) result.poly.remove(index);
+           else result.poly.set(index, new Term(newCoeff, newDegree));
+         } else result.poly.add(-index - 1, new Term(newCoeff, newDegree));
+       }
+       return result;
+    }
+
+    
     @Override
     public String toString() {
-
-        String vD = "";
-        // System.out.println("toString: " + degree());
-        for (Map.Entry<Integer, Integer> entry : monomi.entrySet()) {
-            Integer key = entry.getKey();
-            Integer value = entry.getValue();
-            if (vD == "" || value < 0) {
-                vD += value.toString() + "x^" + key.toString();
-            } else {
-                vD += "+" + value.toString() + "x^" + key.toString();
-            }
-
+        String toStr="";
+        for(int i=0;i<poly.size();i++){
+            toStr+="+"+poly.get(i).coeff+"x^"+poly.get(i).degree;
         }
-        return vD;
+        return toStr;
+
     }
+
+
+   // public SparsePoly minus() {}
+
+   // public SparsePoly sub(SparsePoly other) {}
+    
+
 }
