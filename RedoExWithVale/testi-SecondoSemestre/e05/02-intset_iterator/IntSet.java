@@ -44,7 +44,7 @@ public class IntSet {
     /*
      * effects: Si occupa di rimuovere un elemento n dall'insieme e lancia un
      * eccezzione se
-     * l'elemento non è presente
+     * l'elemento non è presente 
      */
     /**
      * @param n
@@ -115,7 +115,7 @@ public class IntSet {
             @Override
             public Integer next() {
                 if (!hasNext()) {
-                    throw new IllegalAction(":(");
+                    throw new RuntimeException(":(");
                 }
                 pointer++;
                 return set.get(pointer);
