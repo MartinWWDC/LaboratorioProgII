@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -104,12 +103,19 @@ public class Album  implements Iterable<Album.Brano>{
      * Questo metodo permette di ottenere un brano partendo dal suo titolo 
      * @param title
      * @return
-     * @throws IllegalArgumentException viene lanciata quando il testo è o vuoto o nullo 
+     * @throws IllegalArgumentException viene lanciata quando il testo è o vuoto,nullo o quando il brano non è presente
      */
     public Brano getTrackTitle(String title) throws IllegalArgumentException{
-        throw new UnsupportedOperationException("da implementa");
+        if(title.equals("") && title.equals(null)) throw new IllegalArgumentException("Titolo vuoto");
+        for(int i=0;i<brani.length;i++){
+            if(brani[i].titolo.equals(title)){
+                return brani[i];
+            }
+        }
+        throw new IllegalArgumentException("Non presente");
 
     }
+    
      /**
      * Questo metodo permette di ottenere un brano partendo dal suo indice di posizione nell'album 
      * @param index
