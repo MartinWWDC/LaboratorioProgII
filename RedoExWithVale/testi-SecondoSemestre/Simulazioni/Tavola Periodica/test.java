@@ -26,8 +26,11 @@ public class test{
         //System.out.println(tv);
         System.out.println(tv.getElbyKey("O"));
 
-        Scanner sc=new Scanner(System.in);
-        System.out.println(sc.nextLine());
+        String formula=args[1];
+        String primoStep=formula.split("->")[0];
+        System.out.println(primoStep.split("+")[0]);
+
+
         tv.lista.get(0);
         //System.out.println(tv.checkIn(        tv.lista.get(0)        ));
 

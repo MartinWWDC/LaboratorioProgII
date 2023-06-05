@@ -10,7 +10,7 @@ public record ElementoChimico(int numeroAtomico,String nome,String symbol,double
      * IR: nome not null 
      * symbol not null
      * peso  > 0
-     * A
+     * numeroAtomico>0
      * AF: nome rappresenterà il nome dell'elemento chimico 
      * symbol  rappresenta il simbolo dell'elemento 
      * peso rappresenta ile peso del nostro elemento
