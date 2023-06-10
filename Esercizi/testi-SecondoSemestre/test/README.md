@@ -21,5 +21,3 @@
   ```
 
 *siamo stati bravini*
-
-
