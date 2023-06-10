@@ -9,14 +9,11 @@ public interface Robot {
     * @param n numero di elementi da spostare
     * @return numero di spostamenti 
     * @throws IllegalAccessException se a ha un numero di pacchi minore di n
+    * @throws IllegalArgumentException se n è minore o uguale a 0
+    * @throws NullPointerException se a o b sono null
     */
-    public int sposta(Scaffalatura a,Scaffalatura b,int n)throws IllegalAccessException; 
 
-
-
-
-
-
+    public int sposta(Scaffalatura a,Scaffalatura b,int n)throws IllegalAccessException,IllegalArgumentException,NullPointerException; 
 
 
 }
