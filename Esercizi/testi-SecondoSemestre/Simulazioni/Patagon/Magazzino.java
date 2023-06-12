@@ -12,7 +12,7 @@ public class Magazzino {
 
     public Magazzino() {
         colonne = new ArrayList<Scaffalatura>();
-    }
+    }   
     /**
      * Permette di creare un magazzino con un determinato numero di scaffali;
      * @param size
@@ -20,6 +20,9 @@ public class Magazzino {
      */
     public Magazzino(int size)throws IllegalArgumentException{
         super();
+        if(size<=0){
+            throw new IllegalArgumentException();   
+        }
         for(int i=0;i<size;i++){
             colonne.add(new Scaffalatura());
         }

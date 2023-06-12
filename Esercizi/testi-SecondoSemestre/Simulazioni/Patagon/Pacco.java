@@ -22,7 +22,9 @@ public record Pacco(String categoria,int altezza){
      */
     public Pacco(String categoria,int altezza){
         Objects.requireNonNull(categoria, "categoria non deve essere null");
-        if(categoria.length()<1){
+        
+        
+        if(categoria.length()<1 || categoria.isBlank()){
             throw new IllegalArgumentException("deve contenere almeno un carattere");
         }
         if(altezza<=0){

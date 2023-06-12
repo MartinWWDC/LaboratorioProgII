@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CautoRobot implements Robot{
     private List<Pacco> coda=new ArrayList<Pacco>(); 
@@ -14,9 +15,16 @@ public class CautoRobot implements Robot{
 
     }
 
-
+    /**
+     * Non Funge
+     */
     @Override
     public int sposta(Scaffalatura a, Scaffalatura b, int n) throws IllegalAccessException {
+        Objects.requireNonNull(a, "scaffale null");
+        Objects.requireNonNull(b, "scaffale null");
+        if(n<=0){
+            throw new IllegalArgumentException("numero di pacchi negativo");
+        }
         int p=0;
         int oldP=1;
         for(int i=0;i<n;i++){
