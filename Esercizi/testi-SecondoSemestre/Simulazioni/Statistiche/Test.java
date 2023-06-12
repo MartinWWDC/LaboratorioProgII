@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Test {
     public static void main(String[] args) throws FileNotFoundException {
+       
         List<Double> arr=new ArrayList<Double>();
         Scanner reader = new Scanner(new FileReader("input-1.txt"));
         while (reader.hasNextDouble()) {

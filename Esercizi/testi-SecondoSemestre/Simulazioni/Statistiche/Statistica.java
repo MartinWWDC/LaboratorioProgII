@@ -27,7 +27,7 @@ public abstract class Statistica {
             Double v=dati.get(i);
             aggiungi(v);
         }
-        this.dati = dati;
+
     }
    
     /**
