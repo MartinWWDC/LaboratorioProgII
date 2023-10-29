@@ -1,11 +1,3 @@
-# Perchè la directoty non è completa?
-
-perchè la vale è un culo e mi ha abbandonato passanto l'esame mentre io studiavo Sistemi Operativi :cry:
-
-quindi io riparto da capo perchè non mi ricordo nulla
-
-YAY
-
-probabilmente non passerò e mi ritroverò a giugno a studiare con Ester PRog
-
+# Questa è la directory che mi ha portato a passare prog 2 assieme ad ester
+qui c'è tutto quello che so, dalle simulazione d'esame agli esercizi quindi fare riferimento a questo 
 
